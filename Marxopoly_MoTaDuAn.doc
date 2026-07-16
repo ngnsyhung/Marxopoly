@@ -1,0 +1,75 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Marxopoly</title>
+<style>
+  body { font-family: 'Times New Roman', Times, serif; font-size: 13pt; line-height: 1.5; padding: 20px; }
+  h1 { font-size: 18pt; color: #111111; text-align: center; margin-bottom: 24px; }
+  h2 { font-size: 15pt; color: #333333; margin-top: 24px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+  h3 { font-size: 13pt; color: #444444; font-style: italic; }
+  ul { margin-bottom: 15px; }
+  li { margin-bottom: 6px; }
+  p { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<h1>Marxopoly — Ông Trùm Tư Bản (Phiên bản Web Tương Tác)</h1>
+
+<p><strong>Marxopoly</strong> là một dự án ứng dụng tương tác đa phương tiện toàn diện, không chỉ đơn thuần là một trò chơi cờ bàn (board game) mà còn là một hệ sinh thái học tập và trải nghiệm thực tế về Kinh tế học. Dự án khai thác và mô phỏng các quy luật kinh tế thị trường, lý thuyết giá trị thặng dư, cạnh tranh và độc quyền.</p>
+
+<p>Dự án bao gồm 4 phân hệ nội dung chính, mang đến cho người dùng một hành trình trải nghiệm từ việc tiếp thu kiến thức vĩ mô đến việc trực tiếp ra quyết định:</p>
+
+<h2>1. Bản đồ khám phá (Explore Map)</h2>
+<p>Đây là cánh cửa đầu tiên đưa người dùng bước vào thế giới của Marxopoly.</p>
+<ul>
+<li><strong>Trải nghiệm tương tác:</strong> Một bản đồ trực quan cho phép người dùng "chạm" vào các khu vực khác nhau.</li>
+<li><strong>Câu chuyện kinh tế:</strong> Tại mỗi khu vực, người dùng sẽ được dẫn dắt qua những câu chuyện kinh doanh thực tế, từ đó đưa ra các hướng đi và lựa chọn cho riêng mình.</li>
+<li><strong>Mục đích:</strong> Giúp người chơi cảm nhận được bối cảnh kinh tế đa chiều trước khi thực sự bước vào điều hành doanh nghiệp.</li>
+</ul>
+
+<h2>2. Infographic (Bức tranh vĩ mô)</h2>
+<p>Phân hệ cung cấp góc nhìn toàn cảnh về các dòng chảy kinh tế.</p>
+<ul>
+<li><strong>Hệ thống hóa kiến thức:</strong> Trực quan hóa các khái niệm như Dòng vốn, Sự dịch chuyển nhân sự, Chuỗi cung ứng toàn cầu và Tác động của công nghệ.</li>
+<li><strong>Mục đích:</strong> Giúp sinh viên và người chơi hiểu được "bức tranh lớn" của nền kinh tế, mối liên hệ mật thiết giữa tư bản, lao động và nhà nước trước khi áp dụng chúng vào thực tiễn trò chơi.</li>
+</ul>
+
+<h2>3. Video Trailer</h2>
+<ul>
+<li>Một video giới thiệu hoành tráng ở chế độ toàn màn hình.</li>
+<li><strong>Nội dung:</strong> Truyền tải tinh thần của thời đại công nghiệp 4.0, sự khốc liệt của thương trường và thông điệp cốt lõi của dự án: <em>“Chiến lược • Thâu tóm • Dẫn đầu”</em>.</li>
+<li><strong>Mục đích:</strong> Khơi gợi sự hứng thú, tạo động lực và đưa người chơi nhập tâm hoàn toàn vào thế giới của các "Ông Trùm".</li>
+</ul>
+
+<h2>4. Trò chơi (Board Game Cốt Lõi)</h2>
+<p>Linh hồn của dự án – một tựa game chiến lược cờ bàn (Strategy Board Game) chơi theo lượt, hỗ trợ 2 đến 4 người chơi (bao gồm cả người thật và hệ thống Bot AI đa dạng độ khó).</p>
+
+<h3>Cơ chế (Gameplay)</h3>
+<ul>
+<li><strong>Vòng lặp phát triển:</strong> Mua tài sản (Nhà máy, Công nghệ, Bất động sản, Cảng quốc tế) ➔ Xây dựng tổ chức sản xuất ➔ Kinh doanh tạo lợi nhuận ➔ Mở rộng thế lực.</li>
+<li><strong>Cân bằng các chỉ số:</strong> Người chơi phải quản lý không chỉ <strong>Tiền mặt (V)</strong> và <strong>Tài sản</strong>, mà còn phải giữ gìn <strong>Uy tín (Society)</strong> và <strong>Sự hài lòng của nhân sự (Happiness)</strong>. Việc bóc lột hoặc độc quyền quá mức sẽ dẫn đến khủng hoảng, đình công hoặc bị thanh tra.</li>
+<li><strong>Sự kiện ngẫu nhiên:</strong> Hệ thống thẻ Cơ hội (Vận hành, Đầu tư, Cạnh tranh, Thế giới) buộc người chơi phải liên tục đưa ra quyết định giải quyết khủng hoảng.</li>
+<li><strong>Hệ thống AI (Bot):</strong> Tích hợp 3 mức độ AI thông minh:
+  <ul>
+    <li><em>Nhà đầu tư:</em> Dễ, phù hợp để làm quen.</li>
+    <li><em>Nhà tư bản:</em> Trung bình, biết tính toán dòng tiền.</li>
+    <li><em>Sói già phố Wall:</em> Khó, tính toán tối ưu hóa từng nước đi, là thử thách thực sự cho bất kỳ ai.</li>
+  </ul>
+</li>
+</ul>
+
+<h3>Điều kiện chiến thắng</h3>
+<p>Sau 20 vòng chơi, đế chế nào đạt tổng điểm cao nhất dựa trên định giá tài sản, thặng dư lợi nhuận, hiệu quả kinh doanh, mức độ hội nhập và sự ủng hộ của xã hội sẽ giành chiến thắng.</p>
+
+<h2>5. Giá trị và Thông điệp Nội dung</h2>
+<p>Toàn bộ dự án Marxopoly được xây dựng dựa trên sự giao thoa giữa <strong>Kinh tế chính trị học Mác-Lênin</strong> và <strong>thực tiễn quản trị doanh nghiệp hiện đại</strong>:</p>
+<ul>
+<li><strong>Tính nhân văn:</strong> Trò chơi chứng minh rằng lợi nhuận không phải là tất cả. Nếu đánh đổi niềm tin của xã hội và sức lao động của con người, doanh nghiệp sẽ sụp đổ.</li>
+<li><strong>Tư duy chiến lược:</strong> Rèn luyện khả năng quản lý rủi ro, phân bổ nguồn vốn và nắm bắt cơ hội trong một thị trường luôn biến động.</li>
+</ul>
+
+<p>Marxopoly không chỉ để giải trí, mà là một công cụ giáo dục tương tác sâu sắc, nơi người chơi học cách làm chủ bàn cờ kinh tế bằng cả lý trí và trách nhiệm.</p>
+
+</body>
+</html>
