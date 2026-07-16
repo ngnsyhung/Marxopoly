@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
-import { Delta, events, GameEvent, playerColors, playerSymbols, tiles } from "./game-data";
+import { Delta, events, GameEvent, playerColors, playerSymbols, tiles, botNames } from "./game-data";
 import CourseGraphic from "./CourseGraphic";
 import ExploreMap from "./ExploreMap";
 import SplashScreen from "./SplashScreen";
@@ -97,6 +97,8 @@ function playDiceRollSound() {
   });
 }
 
+export type BotDifficulty = "easy" | "medium" | "hard";
+
 type Player = {
   name: string;
   color: string;
@@ -112,6 +114,8 @@ type Player = {
   integration: number;
   monopoly: number;
   lastProfits: number[];
+  isBot: boolean;
+  botDifficulty?: BotDifficulty;
 };
 
 type Phase = "setup" | "roll" | "manage" | "finished";
@@ -156,7 +160,7 @@ const topicName: Record<GameEvent["topic"], string> = {
   T6: "Thế giới",
 };
 
-function newPlayer(name: string, index: number): Player {
+function newPlayer(name: string, index: number, isBot: boolean = false, botDifficulty?: BotDifficulty): Player {
   return {
     name,
     color: playerColors[index],
@@ -172,6 +176,8 @@ function newPlayer(name: string, index: number): Player {
     integration: 0,
     monopoly: 0,
     lastProfits: [],
+    isBot,
+    botDifficulty,
   };
 }
 
@@ -222,6 +228,8 @@ export default function Game() {
   const [showHomeGuide, setShowHomeGuide] = useState(true);
   const [playerCount, setPlayerCount] = useState(2);
   const [names, setNames] = useState(["Tập đoàn Sao Việt", "Liên hiệp Tương Lai", "Công ty Đại Đồng", "Xí nghiệp Đông Dương"]);
+  const [isBotList, setIsBotList] = useState<boolean[]>([false, false, false, false]);
+  const [botDifficultyList, setBotDifficultyList] = useState<BotDifficulty[]>(["easy", "easy", "easy", "easy"]);
   const [players, setPlayers] = useState<Player[]>([]);
   const [owners, setOwners] = useState<Record<number, number>>({});
   const [current, setCurrent] = useState(0);
@@ -255,6 +263,85 @@ export default function Game() {
     }
   }, [players, owners, current, round, phase, demand, log]);
 
+  // Bot AI logic
+  useEffect(() => {
+    if (phase === "setup" || phase === "finished") return;
+    if (!active || !active.isBot) return;
+
+    const timer = setTimeout(() => {
+      if (phase === "roll" && !isRolling && !isRevealingDice) {
+        rollDice();
+      } else if (phase === "manage" && !isRevealingDice) {
+        if (pendingEvent) {
+          if (active.botDifficulty === "easy") {
+            chooseEvent(Math.floor(Math.random() * pendingEvent.choices.length));
+          } else {
+            let bestIdx = 0;
+            let maxScore = -Infinity;
+            pendingEvent.choices.forEach((choice, idx) => {
+              const d = choice.delta;
+              let score = (d.cash ?? 0) + (d.surplus ?? 0) * 2 + (d.factories ?? 0) * 6 + (d.tech ?? 0) * 4 + (d.monopoly ?? 0) * 2;
+              if (active.botDifficulty === "hard") {
+                  score += (d.society ?? 0) * 1 + (d.happiness ?? 0) * 0.5 + (d.integration ?? 0) * 2;
+              }
+              if (score > maxScore) {
+                maxScore = score;
+                bestIdx = idx;
+              }
+            });
+            chooseEvent(bestIdx);
+          }
+          return;
+        }
+
+        if (tile.price && owners[tile.id] === undefined && active.cash >= tile.price) {
+          let shouldBuy = false;
+          if (active.botDifficulty === "easy") {
+            shouldBuy = Math.random() > 0.5;
+          } else if (active.botDifficulty === "medium") {
+            shouldBuy = active.cash >= tile.price + 3;
+          } else {
+            shouldBuy = true;
+          }
+          
+          if (shouldBuy) {
+            buyAsset();
+            return;
+          }
+        }
+
+        if (!produced) {
+          if (active.botDifficulty === "easy" && wage !== "low") { setWage("low"); return; }
+          if (active.botDifficulty === "medium" && wage !== "standard") { setWage("standard"); return; }
+          if (active.botDifficulty === "hard" && wage !== "fair") { setWage("fair"); return; }
+          produce();
+          return;
+        }
+
+        if (active.botDifficulty === "hard") {
+           if (active.cash >= 15 && active.workers < 10) {
+             management({ cash: -1, workers: 1 }, `Tuyển 1 nhân sự với phí 1V.`);
+             return;
+           }
+           if (active.cash >= 25 && active.tech < 12) {
+             management({ cash: -4, tech: 1 }, `Nâng công nghệ với phí 4V.`);
+             return;
+           }
+        } else if (active.botDifficulty === "medium") {
+           if (active.cash >= 20 && active.workers < 8) {
+             management({ cash: -1, workers: 1 }, `Tuyển 1 nhân sự với phí 1V.`);
+             return;
+           }
+        }
+
+        endTurn();
+      }
+    }, 1200);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, current, isRolling, isRevealingDice, pendingEvent, produced, tile?.id, active?.cash, active?.workers, active?.tech, wage]);
+
   function addLog(text: string) {
     setLog((items) => [text, ...items].slice(0, 18));
     setMessage(text);
@@ -265,7 +352,7 @@ export default function Game() {
   }
 
   function startGame() {
-    const roster = Array.from({ length: playerCount }, (_, index) => newPlayer(names[index].trim() || `Doanh nghiệp ${index + 1}`, index));
+    const roster = Array.from({ length: playerCount }, (_, index) => newPlayer(names[index].trim() || `Doanh nghiệp ${index + 1}`, index, isBotList[index], botDifficultyList[index]));
     setPlayers(roster);
     setOwners({});
     setCurrent(0);
@@ -277,6 +364,17 @@ export default function Game() {
     setIsRevealingDice(false);
     setPhase("roll");
     addLog(`${roster[0].name} mở màn cuộc cạnh tranh.`);
+  }
+
+  function toggleBot(index: number, isBot: boolean) {
+    setIsBotList((list) => list.map((item, i) => i === index ? isBot : item));
+    if (isBot) {
+      setNames((items) => items.map((item, i) => i === index ? botNames[Math.floor(Math.random() * botNames.length)] : item));
+    }
+  }
+
+  function changeDifficulty(index: number, difficulty: BotDifficulty) {
+    setBotDifficultyList((list) => list.map((item, i) => i === index ? difficulty : item));
   }
 
   function drawEvent(topic?: GameEvent["topic"]) {
@@ -501,10 +599,27 @@ export default function Game() {
             </label>
             <div className="name-grid">
               {names.slice(0, playerCount).map((name, index) => (
-                <label key={index} style={{ "--player": playerColors[index] } as React.CSSProperties}>
-                  <span>{playerSymbols[index]} Người chơi {index + 1}</span>
-                  <input value={name} maxLength={28} onChange={(event) => setNames((items) => items.map((item, i) => i === index ? event.target.value : item))} />
-                </label>
+                <div key={index} className="player-setup-row" style={{ "--player": playerColors[index], display: "flex", flexDirection: "column", gap: "8px" } as React.CSSProperties}>
+                  <label>
+                    <span style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                      <span>{playerSymbols[index]} Người chơi {index + 1}</span>
+                      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                        {isBotList[index] && (
+                          <select value={botDifficultyList[index]} onChange={(e) => changeDifficulty(index, e.target.value as BotDifficulty)} style={{ background: "rgba(0,0,0,0.2)", border: "none", color: "inherit", fontSize: "0.75em", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", appearance: "none" }}>
+                            <option value="easy">Nhà đầu tư</option>
+                            <option value="medium">Nhà tư bản</option>
+                            <option value="hard">Sói già phố Wall</option>
+                          </select>
+                        )}
+                        <select value={isBotList[index] ? "bot" : "human"} onChange={(e) => toggleBot(index, e.target.value === "bot")} style={{ background: "rgba(0,0,0,0.2)", border: "none", color: "inherit", fontSize: "0.75em", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", appearance: "none" }}>
+                          <option value="human">Người</option>
+                          <option value="bot">Bot</option>
+                        </select>
+                      </div>
+                    </span>
+                    <input value={name} maxLength={28} onChange={(event) => setNames((items) => items.map((item, i) => i === index ? event.target.value : item))} />
+                  </label>
+                </div>
               ))}
             </div>
           </div>

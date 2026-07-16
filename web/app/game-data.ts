@@ -222,3 +222,16 @@ export const events: GameEvent[] = (Object.keys(eventTitles) as (keyof typeof ev
 
 export const playerColors = ["#1687b1", "#d45532", "#16877e", "#8c67b8"];
 export const playerSymbols = ["●", "▲", "■", "◆"];
+
+export const botNames = [
+  "Quỹ Đầu Tư Alpha",
+  "Tập Đoàn Beta",
+  "Vốn Cổ Phần Omega",
+  "Ngân Hàng Trung Ương",
+  "Công Ty Tài Chính Delta",
+  "Tập Đoàn Sigma",
+  "Holdings Hưng Thịnh",
+  "Ventures Tương Lai",
+  "Capital Toàn Cầu",
+  "Invest Tiên Phong",
+];
