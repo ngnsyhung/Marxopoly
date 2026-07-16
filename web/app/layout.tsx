@@ -5,11 +5,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ong-trum-tu-ban-game.codex-dmh-03-2901.chatgpt.site"),
   title: "Marxopoly — Ông Trùm Tư Bản",
   description: "Mua tài sản, mở rộng kinh doanh và dẫn đầu bàn cờ trong game chiến lược dành cho 2–4 người.",
-  icons: {
-    icon: [{ url: "/favicon.png?v=20260715", type: "image/png", sizes: "1254x1254" }],
-    shortcut: "/favicon.png?v=20260715",
-    apple: "/favicon.png?v=20260715",
-  },
+
   openGraph: {
     title: "Ông Trùm Tư Bản",
     description: "Mua • Xây • Kinh doanh • Dẫn đầu",

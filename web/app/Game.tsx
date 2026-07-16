@@ -637,7 +637,7 @@ export default function Game() {
   return (
     <main className="game-shell">
       <header className="topbar">
-        <div className="brand"><span className="brand-mark">ÔT</span><div><strong>ÔNG TRÙM TƯ BẢN</strong><small>Ai sẽ làm chủ bàn cờ?</small></div></div>
+        <div className="brand"><img className="brand-mark" src="/icon/Favorite%20Icon.png" alt="ÔT" style={{ height: "32px", width: "auto" }} /><div><strong>ÔNG TRÙM TƯ BẢN</strong><small>Ai sẽ làm chủ bàn cờ?</small></div></div>
         <div className="round-box"><small>VÒNG</small><strong>{String(round).padStart(2, "0")}<span>/20</span></strong></div>
         <div className="market-box"><small>SỨC MUA</small><div className={`demand demand-${demand}`}>{demand < 0 ? "CHẬM −1" : demand > 0 ? "TỐT +1" : "ỔN ĐỊNH"}</div></div>
         <button className="ghost" onClick={() => setShowRules(true)}>Cách chơi</button>
